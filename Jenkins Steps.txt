@@ -1,0 +1,70 @@
+TODO:
+
+1. Deploy a Web application manually on Tomcat server
+
+- To start the Tomcat server, we need to execute:
+Tomcat\bin\startup.bat or startup.sh
+
+If tomcat doesn't starts, then most probably it's because of JAVA_HOME environment variable not been set, for ex:
+JAVA_HOME=c:\program files\java\jdk1.8.11_201
+
+To confirm Tomcat is up and running, we can check from the browser by typing:
+http://localhost:8080
+
+If Tomcat is still not running, then it's most probably because of port issue. We need to change the port no. by editing
+Tomcat\conf\server.xml
+
+- The easiest way to deploy an application on Tomcat server is by copying the war file in the Tomcat\webapps folder
+
+
+
+2. Deploy a Web application automatically on Tomcat server using Jenkins
+
+- First, we need to enable Remote Deployment access on Tomcat server by adding the required roles and user in:
+Tomcat/conf/tomcat-users.xml
+
+<role rolename="manager-gui" />
+<role rolename="manager-script" />
+
+<user username="admin" password="admin" 
+                          roles="manager-gui, manager-script"/>
+
+
+- Next in Jenkins, there are few settings we need to do:
+  - We need to install few plugins which will help us in our next 	example:
+  - Go to Jenkins Dashboard\Manage Jenkins\Manage Plugins
+  	Under Available plugins, search for the below ones and install:
+  		- Maven Integration Plugin
+  		- Deploy to Container Plugin
+
+  - Next we need to set THE JAVA_HOME and MAVEN_HOME in Jenkins
+  	- Jenkins Dashboard\Manage Jenkins\Global Tool Configuration
+
+- Now we will create a new job in jenkins to build and deploy our web application
+	- Create a New Item
+	- Enter some name, for ex: ci-cd-demo
+	- Select Maven Project instead of Freestyle Project
+	- On the next screen, there are 3 important steps for us:
+		- Configuring Github repo where our project resides
+		- Congifuring Maven to build our project and generate the war
+		- Configuring Tomcat for the deployment
+
+		- Under Source code management option, select Git and copy/paste the Github repo URL, for ex:
+			https://github.com/majrul/cdac-2022-repo4
+		
+		- Next, under Build, enter the correct location of POM.xml file, for ex:
+			mywebapp/pom.xml
+		- Then under Goals and options, type:
+		package
+
+		- Then under post build actions, select "Deploy war/ear to Container" option.
+		- Under WAR/EAR files option, type: **/*.war
+		- Under Context Path, enter: /mywebapp
+		- Under Containers, select Tomcat 9.x Remote
+			- Under credentials, enter admin account details required 	for connecting to Tomcat remotely
+			- Enter the Tomcat URL, for ex: http://localhost:8181
+
+
+
+
+
