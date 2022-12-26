@@ -1,3 +1,24 @@
+Download jenkins.war from the jenkins website
+
+To start the jenkins server:
+java -jar jenkins.war 
+
+To run the server on a different port than 8080
+java -jar jenkins.war --httpPort=9000
+
+Once the server starts, a default password for admin access
+will be displayed on the console, make a note of it
+
+Then open a browser and type:
+http://localhost:9000
+
+After you login, select the "Install Suggested Plugins" option and proceed
+
+Once all the plugins will get installed, you will asked for entering the admin user details for future login
+
+Enter admin for the username and password both
+
+
 TODO:
 
 1. Deploy a Web application manually on Tomcat server
